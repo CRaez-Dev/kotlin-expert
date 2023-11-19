@@ -21,3 +21,13 @@ val list: MutableList<Note> = mutableListOf(
     Note("Title 9", "Description 9",Note.Type.TEXT),
     Note("Title 10", "Description 10",Note.Type.TEXT)
 )
+
+fun getNotes():List<Note> {
+    val list = (1 ..10).map { Note(
+        title = "Title $it",
+        description = "Description $it",
+        type = if( it % 3 == 0 )  Note.Type.AUDIO else Note.Type.TEXT
+    ) }
+
+    return list
+}
