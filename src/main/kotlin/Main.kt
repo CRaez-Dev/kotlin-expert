@@ -26,7 +26,7 @@ class AppState {
     }
 
     data class UiState(
-        val notes: List<Note> = emptyList(),
+        val notes: List<Note>? = null,
         val loading: Boolean = false
     )
 }
@@ -35,17 +35,20 @@ class AppState {
 @Preview
 fun App(appState: AppState) {
 
-    LaunchedEffect(true) {
-        appState.loadNotes()
+    val notes = appState.state.value.notes
+    if (notes == null){
+        LaunchedEffect(true) {
+            appState.loadNotes()
+        }
     }
-    val notes = appState.state.value
 
     MaterialTheme {
         Box(
             contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
         ) {
-            if(notes.loading) CircularProgressIndicator()
-            NotesList(notes.notes)
+            if(appState.state.value.loading) CircularProgressIndicator()
+            if (notes != null) NotesList(notes)
         }
 
     }
