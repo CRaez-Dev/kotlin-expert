@@ -31,5 +31,6 @@ fun getNotes(getNotes: (noteList: List<Note>) -> Unit) {
             type = if (it % 3 == 0) Note.Type.AUDIO else Note.Type.TEXT
         )
     }
+    println("here")
     getNotes(list)
 }

@@ -11,34 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import kotlin.concurrent.thread
-
-class AppState {
-
-    val state = mutableStateOf(UiState())
-
-    fun loadNotes() {
-        thread {
-
-            state.value = UiState(loading = true)
-            getNotes { it -> state.value = UiState(notes = it, loading = false) }
-        }
-    }
-
-    data class UiState(
-        val notes: List<Note>? = null,
-        val loading: Boolean = false
-    )
-}
 
 @Composable
 @Preview
-fun App(appState: AppState) {
+fun App(appState: AppState): Unit = with(appState) {
 
-    val notes = appState.state.value.notes
-    if (notes == null){
+    if (appState.state.value.notes == null) {
         LaunchedEffect(true) {
-            appState.loadNotes()
+            loadNotes()
         }
     }
 
@@ -47,11 +27,12 @@ fun App(appState: AppState) {
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            if(appState.state.value.loading) CircularProgressIndicator()
-            if (notes != null) NotesList(notes)
+            if (appState.state.value.loading) CircularProgressIndicator()
+            appState.state.value.notes?.let { NotesList(it) }
         }
 
     }
+
 }
 
 @Composable
