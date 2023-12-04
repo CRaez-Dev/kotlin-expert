@@ -14,9 +14,9 @@ import androidx.compose.ui.window.application
 
 @Composable
 @Preview
-fun App(appState: AppState): Unit = with(appState) {
+fun App(): Unit = with(AppState) {
 
-    if (appState.state.value.notes == null) {
+    if (state.value.notes == null) {
         LaunchedEffect(true) {
             loadNotes()
         }
@@ -27,8 +27,8 @@ fun App(appState: AppState): Unit = with(appState) {
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            if (appState.state.value.loading) CircularProgressIndicator()
-            appState.state.value.notes?.let { NotesList(it) }
+            if (state.value.loading) CircularProgressIndicator()
+            state.value.notes?.let { NotesList(it) }
         }
 
     }
@@ -76,10 +76,9 @@ private fun NotesList(notes: List<Note>) {
 }
 
 fun main() {
-    val appState = AppState()
     application {
         Window(onCloseRequest = ::exitApplication, title = "My Application") {
-            App(appState)
+            App()
         }
     }
 }
