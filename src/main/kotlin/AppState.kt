@@ -8,8 +8,14 @@ object AppState {
     val state: StateFlow<UiState> = _state.asStateFlow()
 
     suspend fun loadNotes() {
+
+        var notes:List<Note> = emptyList()
         _state.value =  UiState(loading = true)
-        _state.value =  UiState(notes = getNotes())
+
+        getNotes().collect{
+            notes = notes + it
+            _state.value = UiState(notes = notes)
+        }
     }
 
     data class UiState(
