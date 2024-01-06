@@ -18,7 +18,7 @@ fun App(): Unit = with(AppState) {
 
     if (state.notes == null) {
         LaunchedEffect(true) {
-            loadNotes()
+            loadNotes(this)
         }
     }
 
@@ -28,7 +28,7 @@ fun App(): Unit = with(AppState) {
             modifier = Modifier.fillMaxSize()
         ) {
             if (state.loading) CircularProgressIndicator()
-            state.notes?.let { NotesList(it) }
+            state.notes?.let { notes -> NotesList(notes) }
         }
 
     }

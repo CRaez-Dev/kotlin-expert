@@ -1,3 +1,7 @@
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+
 /*enum class Type(val id:Int, val description: String) {
     TEXT(1,"text") ,
     AUDIO(0,"audio")
@@ -8,7 +12,7 @@ data class Note(val title: String, val description: String, val type: Type) {
         AUDIO(0, "audio")
     }
 }
-
+/*
 val list: MutableList<Note> = mutableListOf(
     Note("Title 1", "Description 1", Note.Type.TEXT),
     Note("Title 2", "Description 2", Note.Type.AUDIO),
@@ -21,16 +25,16 @@ val list: MutableList<Note> = mutableListOf(
     Note("Title 9", "Description 9", Note.Type.TEXT),
     Note("Title 10", "Description 10", Note.Type.TEXT)
 )
+*/
 
-fun getNotes(getNotes: (noteList: List<Note>) -> Unit) {
-    Thread.sleep(3000)
-    val list = (1..10).map {
-        Note(
-            title = "Title $it",
-            description = "Description $it",
-            type = if (it % 3 == 0) Note.Type.AUDIO else Note.Type.TEXT
-        )
-    }
-    println("here")
-    getNotes(list)
+suspend fun getNotes() = withContext(Dispatchers.IO) {
+        delay(3000)
+        val list = (1..10).map {
+            Note(
+                title = "Title $it",
+                description = "Description $it",
+                type = if (it % 3 == 0) Note.Type.AUDIO else Note.Type.TEXT
+            )
+        }
+    return@withContext list
 }
