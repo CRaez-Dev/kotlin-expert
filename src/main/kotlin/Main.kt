@@ -16,10 +16,10 @@ import androidx.compose.ui.window.application
 @Preview
 fun App(): Unit = with(AppState) {
 
-    if (state.notes == null) {
-        LaunchedEffect(true) {
-            loadNotes(this)
-        }
+    val state by state.collectAsState()
+
+    LaunchedEffect(true) {
+        loadNotes()
     }
 
     MaterialTheme {
@@ -28,11 +28,13 @@ fun App(): Unit = with(AppState) {
             modifier = Modifier.fillMaxSize()
         ) {
             if (state.loading) CircularProgressIndicator()
-            state.notes?.let { notes -> NotesList(notes) }
+            else {
+                state.notes?.let {
+                NotesList(it)
+                }
+            }
         }
-
     }
-
 }
 
 @Composable
