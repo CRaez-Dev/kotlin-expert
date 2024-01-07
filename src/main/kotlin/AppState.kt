@@ -9,12 +9,11 @@ object AppState {
 
     suspend fun loadNotes() {
 
-        var notes:List<Note> = emptyList()
+
         _state.value =  UiState(loading = true)
 
         getNotes().collect{
-            notes = notes + it
-            _state.value = UiState(notes = notes)
+            _state.value = UiState(notes = it)
         }
     }
 
