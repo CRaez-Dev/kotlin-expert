@@ -18,7 +18,7 @@ fun Home(): Unit = with(HomeState) {
     MaterialTheme {
         Scaffold(
             topBar = {
-                TopBar()
+                TopBar(onFilterClick = ::onFilterClick)
             }
         ) { padding ->
             Box(
@@ -27,7 +27,7 @@ fun Home(): Unit = with(HomeState) {
             ) {
                 if (state.loading) CircularProgressIndicator()
                 else {
-                    state.notes?.let {
+                    state.filteredNotes?.let {
                         NotesList(it)
                     }
                 }
