@@ -1,4 +1,5 @@
-import kotlinx.coroutines.delay
+package data
+
 import kotlinx.coroutines.flow.flow
 
 data class Note(val title: String, val description: String, val type: Type) {
@@ -10,15 +11,13 @@ data class Note(val title: String, val description: String, val type: Type) {
 
 suspend fun getNotes() = flow<List<Note>> {
     var notes:List<Note> = emptyList()
-    (1..10).map {
-        delay(500)
-        notes = notes + Note(
+    notes = (1..10).map {
+        Note(
             title = "Title $it",
             description = "Description $it",
             type = if (it % 3 == 0) Note.Type.AUDIO else Note.Type.TEXT
         )
-        emit(notes)
     }
-
+    emit(notes)
 }
 
