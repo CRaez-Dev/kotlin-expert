@@ -1,5 +1,6 @@
 package data
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
 data class Note(val title: String, val description: String, val type: Type) {
@@ -9,8 +10,13 @@ data class Note(val title: String, val description: String, val type: Type) {
     }
 }
 
+operator fun Note.plus(other: Note): Note = Note(title, "$description ${other.description}", type)
+fun test(list: List<Note>, note2: Note) = list + note2
+
 suspend fun getNotes() = flow<List<Note>> {
     var notes:List<Note> = emptyList()
+    delay(3000)
+
     notes = (1..10).map {
         Note(
             title = "Title $it",
