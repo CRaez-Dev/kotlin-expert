@@ -8,12 +8,13 @@ data class Note(val title: String, val description: String, val type: Type) {
         TEXT(id = 1, description = "text"),
         AUDIO(id = 0, description ="audio")
     }
+    companion object
 }
 
 operator fun Note.plus(other: Note): Note = Note(title, "$description ${other.description}", type)
 fun test(list: List<Note>, note2: Note) = list + note2
 
-suspend fun getNotes() = flow<List<Note>> {
+val Note.Companion.fakeNotes get() = flow<List<Note>> {
     var notes:List<Note> = emptyList()
     delay(3000)
 
