@@ -9,30 +9,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.reflect.KProperty
-
-operator fun <T> StateFlow<T>.getValue(owner:Any?, property:KProperty<*>): T = this.value
-operator fun <T> MutableStateFlow<T>.setValue(owner:Any?, property:KProperty<*>,newValue:T){
-    this.value = newValue
-}
 
 object HomeState {
 
-    /*
     private val _state: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
-     */
-
-    var state: UiState by MutableStateFlow(UiState())
-        private set
 
     suspend fun loadNotes(coroutineScope: CoroutineScope) {
 
         coroutineScope.launch{
-            state =  UiState(loading = true)
+            _state.value =  UiState(loading = true)
 
             Note.fakeNotes.collect{
-                state = UiState(notes = it)
+                _state.value = UiState(notes = it)
             }
         }
     }
